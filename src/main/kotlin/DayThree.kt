@@ -16,9 +16,7 @@ var binaryOxyValuesList: MutableList<Char>? = mutableListOf()
 var binaryCoValuesList: MutableList<Char>? = mutableListOf()
 
 
-
-
-fun main () {
+fun main() {
     adventThreePartOne()
     //adventThreePartTwo()
 }
@@ -76,6 +74,7 @@ fun findOxygenRating(check: Int) {
     getOxygenRating(check)
 
 }
+
 fun findCo2Rating(check: Int) {
     binaryCoValuesList = getBinaryListCoRating(check)
     calcCo2Counters()
@@ -90,8 +89,7 @@ fun setUpOxygen(check: Int) {
             }
 
         }
-    }
-    else {
+    } else {
         for (item in submarineCondition) {
             if (item[check].toString() == "0") {
                 submarineOxygenRating.add(item)
@@ -109,8 +107,7 @@ fun setUpCo(check: Int) {
             }
 
         }
-    }
-    else{
+    } else {
         for (item in submarineCondition) {
             if (item[check].toString() == "1") {
                 submarineCo2Rating.add(item)
@@ -128,8 +125,7 @@ fun getOxygenRating(check: Int) {
                 toRemove.add(item)
             }
         }
-    }
-    else {
+    } else {
         for (item in submarineOxygenRating) {
             if (item[check].toString() == "1") {
                 toRemove.add(item)
@@ -149,8 +145,7 @@ fun getCo2Rating(check: Int) {
                 toRemove.add(item)
             }
         }
-    }
-    else {
+    } else {
         for (item in submarineCo2Rating) {
             if (item[check].toString() == "0") {
                 toRemove.add(item)
@@ -162,31 +157,30 @@ fun getCo2Rating(check: Int) {
     }
 }
 
-fun readFileDayThreePartOne(fileName: String)
-        = File(fileName).forEachLine {
+fun readFileDayThreePartOne(fileName: String) = File(fileName).forEachLine {
     submarineCondition.add(it)
 }
 
 fun getBinaryList(check: Int): MutableList<Char> {
-    var binaryListToReturn : MutableList<Char> = mutableListOf()
+    val binaryListToReturn: MutableList<Char> = mutableListOf()
     for (item in submarineCondition) {
-        binaryListToReturn?.add(item[check])
+        binaryListToReturn.add(item[check])
     }
     return binaryListToReturn
 }
 
 fun getBinaryListOxygenRating(check: Int): MutableList<Char> {
-    var binaryListToReturn : MutableList<Char> = mutableListOf()
+    val binaryListToReturn: MutableList<Char> = mutableListOf()
     for (item in submarineOxygenRating) {
-        binaryListToReturn?.add(item[check])
+        binaryListToReturn.add(item[check])
     }
     return binaryListToReturn
 }
 
 fun getBinaryListCoRating(check: Int): MutableList<Char> {
-    var binaryListToReturn : MutableList<Char> = mutableListOf()
+    val binaryListToReturn: MutableList<Char> = mutableListOf()
     for (item in submarineCo2Rating) {
-        binaryListToReturn?.add(item[check])
+        binaryListToReturn.add(item[check])
     }
     return binaryListToReturn
 }
@@ -222,12 +216,12 @@ fun calcCo2Counters() {
     }
 }
 
-fun calcBinaryRates(){
+fun calcBinaryRates() {
     if (zeroCounter > oneCounter) {
-        gammaRateBinary = gammaRateBinary + "0"
-        epsilonRateBinary = epsilonRateBinary + "1"
-    } else if (zeroCounter < oneCounter){
-        gammaRateBinary = gammaRateBinary + "1"
-        epsilonRateBinary = epsilonRateBinary + "0"
+        gammaRateBinary += "0"
+        epsilonRateBinary += "1"
+    } else if (zeroCounter < oneCounter) {
+        gammaRateBinary += "1"
+        epsilonRateBinary += "0"
     }
 }

@@ -6,11 +6,11 @@ val sonarValues: MutableList<Int> = mutableListOf()
 
 fun main() {
     adventOnePartOne()
-   //adventOnePartTwo()
+    //adventOnePartTwo()
 
 }
 
-fun adventOnePartOne(){
+fun adventOnePartOne() {
     readFileDayOne("src/DayOneInput.txt")
     var increasedCounter: Int = 0
     val startingIndex: Int = 1
@@ -23,7 +23,7 @@ fun adventOnePartOne(){
     println(increasedCounter)
 }
 
-fun adventOnePartTwo(){
+fun adventOnePartTwo() {
     readFileDayOne("src/DayOneInput.txt")
     var increasedCounter: Int = 0
     val startingIndex: Int = 1
@@ -36,10 +36,9 @@ fun adventOnePartTwo(){
     println(increasedCounter)
 }
 
-fun readFileDayOne(fileName: String)
-        = File(fileName).forEachLine {
-            sonarValues.add(it.toInt())
-        }
+fun readFileDayOne(fileName: String) = File(fileName).forEachLine {
+    sonarValues.add(it.toInt())
+}
 
 
 fun calcTupleSum(startingIndex: Int): Int {
