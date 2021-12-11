@@ -74,30 +74,17 @@ fun octopusFlashCheck(stepNumber: Int) {
 fun octopusFlash(index: Int) {
     var leftIndexLimit = index - index.mod(10)
     var rightIndexLimit = index + (9 - index.mod(10))
-    var upperLeftIndexLimit = leftIndexLimit - 10
-    var upperRightIndexLimit = rightIndexLimit - 10
-    var lowerLeftIndexLimit = leftIndexLimit + 10
-    var lowerRightIndexLimit = rightIndexLimit + 10
-
-
     var upperIndex = index - 10
     var lowerIndex = index + 10
     var leftIndex = index - 1
     var rightIndex = index + 1
-
-    //Diagonals
-
     var upperLeftIndex = leftIndex - 10
     var upperRightIndex = rightIndex - 10
     var lowerLeftIndex = leftIndex + 10
     var lowerRightIndex = rightIndex + 10
 
-    //Reset Initial Octopus
-
     octopusEnergyLevels[index] = 0
     octoFlashCounter += 1
-
-    //Blow Up The Friends
 
     if (leftIndex >= leftIndexLimit && octopusEnergyLevels[leftIndex] != 0) {
         octopusEnergyLevels[leftIndex] += 1
@@ -125,7 +112,5 @@ fun octopusFlash(index: Int) {
     if (rightIndex <= rightIndexLimit && lowerRightIndex < octopusEnergyLevels.size && octopusEnergyLevels[lowerRightIndex] != 0) {
         octopusEnergyLevels[lowerRightIndex] += 1
     }
-
-
 }
 
