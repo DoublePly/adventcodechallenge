@@ -1,10 +1,13 @@
 import java.io.File
+import java.lang.Math.ceil
 
 var polymerTemplate: String = ""
 var polymerInjectionInstructionsRaw: MutableList<String> = mutableListOf()
 var polymerInjectionInstructions: MutableMap<String, String> = mutableMapOf()
-var mapOfPolymerInstances: MutableMap<String, Int> = mutableMapOf()
-
+var mapOfPolymerInstances: MutableMap<String, Long> = mutableMapOf()
+var polymerInstanceCount: MutableList<Polymer> = mutableListOf()
+var mapOfLetterCount: MutableMap<String, Long> = mutableMapOf()
+var mapOfLetterCountHolder: MutableMap<String, Long> = mutableMapOf()
 
 fun main() {
     //adventFourteenPartOne()
@@ -29,17 +32,59 @@ fun initiatePolymerInjection() {
 }
 
 fun initiatePolymerInjectionTwo() {
-    for (i in 0 until polymerTemplate.length - 1) {
-        injectPolymerTwo(polymerTemplate.substring(i,i+2), 20)
+    polymerInjectionInstructions.forEach{
+        polymerInstanceCount.add(Polymer(it.key, 0))
     }
-    mapOfPolymerInstances.forEach{ instance ->
-        polymerInjectionInstructions.forEach{
-            if (it.key == instance.key) {
-                println(it.value + "count: " + instance.value)
+    for (i in 0 until polymerTemplate.length - 1) {
+        polymerInstanceCount.forEach{
+            if (it.name == polymerTemplate.substring(i,i+2)){
+                it.instanceCount +=1
             }
         }
     }
-    println(mapOfPolymerInstances)
+
+
+    for (i in 0 until 40) {
+        injectPolymerThree()
+
+    }
+
+    polymerInstanceCount.forEach { instance ->
+        for (i in 0 until instance.name.length) {
+            if (mapOfLetterCountHolder.containsKey(instance.name[i].toString())) {
+                var value = mapOfLetterCountHolder.getValue(instance.name[i].toString())
+                mapOfLetterCountHolder.put(instance.name[i].toString(), value + instance.instanceCount)
+            } else {
+                mapOfLetterCountHolder.put(instance.name[i].toString(), instance.instanceCount)
+            }
+        }
+
+    }
+    mapOfLetterCountHolder.forEach{
+        mapOfLetterCount.put(it.key, it.value/ 2)
+    }
+
+    var firstChar = polymerTemplate[0]
+    var firstCharVal = mapOfLetterCount.getValue(firstChar.toString())
+    var lastChar = polymerTemplate[polymerTemplate.length - 1]
+    var lastCharVal = mapOfLetterCount.getValue(lastChar.toString())
+    mapOfLetterCount.put(firstChar.toString(), firstCharVal + 1 )
+    mapOfLetterCount.put(lastChar.toString(), lastCharVal + 1 )
+
+    println(mapOfLetterCount)
+    var min = mapOfLetterCount.getValue("B")
+    var max: Long = 0
+    mapOfLetterCount.forEach{
+        if (it.value < min) {
+            min = it.value
+        }
+        if (it.value > max) {
+            max = it.value
+        }
+    }
+    println(max - min)
+    //println(polymerInstanceCount)
+
 
 }
 
@@ -55,20 +100,44 @@ fun injectPolymer() {
 }
 
 
-fun injectPolymerTwo(polymerPair: String, injectionCounter: Int) {
-    if (injectionCounter > 0) {
-        println("On Count: $injectionCounter")
-        if (mapOfPolymerInstances.containsKey(polymerPair)) {
-            var value = mapOfPolymerInstances.getValue(polymerPair)
-            mapOfPolymerInstances.put(polymerPair, value + 1)
-        } else {
-            mapOfPolymerInstances.put(polymerPair, 1)
+
+fun injectPolymerThree() {
+        var holderMap: MutableMap<String, Long> = mutableMapOf()
+        polymerInstanceCount.forEach{ polymer ->
+                if (polymer.instanceCount > 0) {
+                        if (holderMap.containsKey(polymer.name.substring(0,1) + polymerInjectionInstructions.getValue(polymer.name))) {
+                            var value = holderMap.getValue(polymer.name.substring(0,1) + polymerInjectionInstructions.getValue(polymer.name))
+                            holderMap.put(polymer.name.substring(0,1) + polymerInjectionInstructions.getValue(polymer.name),
+                                value + polymer.instanceCount)
+
+                        } else {
+                            holderMap.put(polymer.name.substring(0,1) + polymerInjectionInstructions.getValue(polymer.name),
+                                polymer.instanceCount)
+
+                        }
+                        if (holderMap.containsKey(polymerInjectionInstructions.getValue(polymer.name) + polymer.name.substring(1,2))) {
+                            var value = holderMap.getValue(polymerInjectionInstructions.getValue(polymer.name) + polymer.name.substring(1,2))
+                            holderMap.put(polymerInjectionInstructions.getValue(polymer.name) + polymer.name.substring(1,2),
+                                value + polymer.instanceCount)
+
+                        } else {
+                            holderMap.put(polymerInjectionInstructions.getValue(polymer.name) + polymer.name.substring(1,2),
+                                polymer.instanceCount)
+                        }
+
+                    polymer.instanceCount = 0
+            }
         }
-        injectPolymerTwo(polymerPair.substring(0, 1) + polymerInjectionInstructions.getValue(polymerPair), injectionCounter - 1)
-        injectPolymerTwo(polymerInjectionInstructions.getValue(polymerPair) + polymerPair.substring(1, 2), injectionCounter - 1)
+    holderMap.forEach{
+        polymerInstanceCount.forEach{ polymer ->
+            if (it.key == polymer.name) {
+                polymer.instanceCount += it.value
+            }
+        }
     }
 
 }
+
 
 fun countElements() {
     var countResults: MutableMap<Char, Long> = mutableMapOf()
@@ -101,3 +170,5 @@ fun readFileDayFourteen(fileName: String) {
     }
 
 }
+
+data class Polymer(val name: String, var instanceCount: Long)
